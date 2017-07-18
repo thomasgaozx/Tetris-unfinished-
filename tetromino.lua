@@ -119,8 +119,10 @@ return {
     drawTetromino = function(tetromino,grid) --tetromino object={tType,block1,block2,block3,block4}; grid object
         for i=1,4 do
         	block=tetromino[i]
-        	gridPosition=grid[block.x][block.y]
-            love.graphics.draw(block.image,gridPosition.x,gridPosition.y)
+            love.graphics.push()
+            love.graphics.translate(playSpace.leftBound, playSpace.upperBound)
+            love.graphics.draw(block.image, block.x*unit, block.y*unit)
+            love.graphics.pop()
         end
     end,
 
