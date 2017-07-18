@@ -19,8 +19,7 @@ function love.load()
 	for x = 0,(playSpace.width/unit-1) do
 		grid[x]={}
 		for y = 0,(playSpace.height/unit-1) do
-			grid[x][y]={x=(playSpace.leftBound + x*unit), y=(playSpace.upperBound + y*unit)}
-			grid[x][y].isFill=false
+			grid[x][y] = {isFill = false}
 		end
 	end
 
