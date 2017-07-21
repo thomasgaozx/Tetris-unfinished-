@@ -24,7 +24,7 @@ function love.load()
 	end
 
     --TETROMINO initialization
-	newTetromino=tetromino.generateTetromino(2,0)
+	newTetromino=tetromino.generateTetromino(math.floor(playSpace.width/(2*unit))-1,0)
 
     --GAME SETTING
 	incrementTime=0
@@ -32,6 +32,7 @@ function love.load()
 	freezeCounter=0
 	legalMove=true
 	blockImage=love.graphics.newImage('TetrisUnit.png')
+	stage="checkEnd"
 end
 
 function love.keypressed(key)
@@ -74,7 +75,7 @@ function love.keypressed(key)
 	end
 
 	if key == "up" then
-        if newTetromino.tType ~= 'O' then
+        if newTetromino[5] ~= 'O' then
 			centralBlock=newTetromino[1]
 			x0=centralBlock.x
 			y0=centralBlock.y
@@ -98,7 +99,7 @@ end
 
 
 function love.update(dt)
-	if tetromino.reachEnd(newTetromino,grid,playSpace) then
+	if stage=="checkEnd" and tetromino.reachEnd(newTetromino,grid,playSpace) then
 		--TO DO: Check whether need to eliminate one row and move everything down by one
 		
 		freezeCounter=freezeCounter+dt
@@ -110,26 +111,35 @@ function love.update(dt)
 				block=newTetromino[i]
 				grid[block.x][block.y]=true
 			end
-
-			tetromino.rowFilled(grid,playSpace)
-
-			if <=(playSpace.height/unit-1) then
-
-			newTetromino=tetromino.generateTetromino(2,0)		
+			stage="checkRow"			
 		end
 	end
 
+	if stage=="checkRow" then-- checkRow legal then eliminate row else generate new tetromino
+		for row=0,(playSpace.height/unit-1) do
+			if tetromino.shouldEliminate(row,grid,playSpace) then
+				tetromino.moveRow(row,grid,playSpace)
+			end
+		stage="checkEnd"
+		newTetromino=tetromino.generateTetromino(math.floor(playSpace.width/(2*unit))-1,0)
+		end
+	end
+	-------------------------------------------------------------------
 
 	incrementTime=incrementTime+dt
 	incrementMove=incrementMove+dt
-	if love.keyboard.isDown('down') and incrementMove>=0.1 then
+	if love.keyboard.isDown('down') and incrementMove>=0.01 then
 		incrementMove=0
-		tetromino.updateTetromino(newTetromino,0,1)
+		if not tetromino.reachEnd(newTetromino,grid,playSpace) then
+			tetromino.updateTetromino(newTetromino,0,1)
+		end
 	end
 
 	if incrementTime>0.7 then
 		incrementTime=0
-		tetromino.updateTetromino(newTetromino,0,1)
+		if not tetromino.reachEnd(newTetromino,grid,playSpace) then
+			tetromino.updateTetromino(newTetromino,0,1)
+		end
 		freezeCounter=0
 	end
 end

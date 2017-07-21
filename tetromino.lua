@@ -99,7 +99,7 @@ return {
 	end,
 
 	rotate=function(tetromino) --tetromino object={tType,block1,block2,block3,block4}
-		if tetromino.tType=='O' then
+		if tetromino[5]=='O' then
 			return tetromino
 		else
 			centralBlock=tetromino[1]
@@ -126,15 +126,35 @@ return {
 		love.graphics.pop()
 	end,
 
-	rowFilled=function(grid,playSpace) --row is grid[x]
-		for y = 0,(playSpace.height/unit-1) do
-			for x=0,(playSpace.height/unit-1) do
-				antiy=(playSpace.height/unit-1)-y
-				if not grid[x][antiy]
-					return y+1
+	shouldEliminate=function(row,grid,playSpace) -- row in y
+		xrange=playSpace.width/unit-1
+		for x=0,xrange do
+			if not grid[x][row] then
+				return false --false
+			end
+		end
+		return true
+	end,
 
-	rowElimination=function(grid,playSpace)					
+	eliminateRow=function(row,grid,playSpace) --rowStart<rowEnd
+		xrange=playSpace.width/unit-1
+		for x=0,xrange do
+			grid[x][row]=false
+		end
+	end,
 
+	moveRow=function(row,grid,playSpace)
+		xrange=playSpace.width/unit-1
+		for y=1,row do
+			for x=0,xrange do
+				bottomy=row+1-y
+				grid[x][bottomy]=grid[x][bottomy-1]
+			end
+		end
+		for x=0,xrange do
+			grid[x][0]=false
+		end
+	end,
 
 	reachEnd=function(tetromino,grid,playSpace) --tetromino object={tType,block1,block2,block3,block4}, grid object, playSpace object
 		unit=25
