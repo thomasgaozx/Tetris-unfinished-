@@ -131,17 +131,9 @@ return {
 		for i=1,4 do
 			block=tetromino[i]
 			if ((block.y)+1)>(playSpace.height/unit-1) then -- ERROR PRONE
-				for i=1,4 do
-					block=tetromino[i]
-					grid[block.x][block.y]=true
-				end
 				return true
 			elseif (block.y+1)<=(playSpace.height/unit-1) then
 				if grid[block.x][block.y+1] then
-					for i=1,4 do
-						block=tetromino[i]
-						grid[block.x][block.y]=true
-					end
 					return true
 				end
 			end
