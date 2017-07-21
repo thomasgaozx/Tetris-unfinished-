@@ -34,7 +34,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-	if key == "left" then
+	if key == "right" then
 		for i=1,4 do
 			block=newTetromino[i]
 			if ((block.x)+1)>(playSpace.width/unit-1) then
