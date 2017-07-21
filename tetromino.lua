@@ -126,6 +126,16 @@ return {
 		love.graphics.pop()
 	end,
 
+	rowFilled=function(grid,playSpace) --row is grid[x]
+		for y = 0,(playSpace.height/unit-1) do
+			for x=0,(playSpace.height/unit-1) do
+				antiy=(playSpace.height/unit-1)-y
+				if not grid[x][antiy]
+					return y+1
+
+	rowElimination=function(grid,playSpace)					
+
+
 	reachEnd=function(tetromino,grid,playSpace) --tetromino object={tType,block1,block2,block3,block4}, grid object, playSpace object
 		unit=25
 		for i=1,4 do

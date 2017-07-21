@@ -99,9 +99,6 @@ end
 
 function love.update(dt)
 	if tetromino.reachEnd(newTetromino,grid,playSpace) then
-
-
-
 		--TO DO: Check whether need to eliminate one row and move everything down by one
 		
 		freezeCounter=freezeCounter+dt
@@ -114,11 +111,9 @@ function love.update(dt)
 				grid[block.x][block.y]=true
 			end
 
-			for y = 0,(playSpace.height/unit-1) do
-				for x=0,(playSpace.height/unit-1) do
-					antiy=(playSpace.height/unit-1)-y
-					if not grid[x][y]
-						
+			tetromino.rowFilled(grid,playSpace)
+
+			if <=(playSpace.height/unit-1) then
 
 			newTetromino=tetromino.generateTetromino(2,0)		
 		end
